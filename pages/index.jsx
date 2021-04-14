@@ -2,7 +2,7 @@ import Head from "next/head"
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/router"
 
-import * as S from "./styles.jsx"
+import * as S from "../styles/index"
 
 export default function Home() {
   const [move, setMove] = useState(false)
@@ -12,10 +12,7 @@ export default function Home() {
   const hoverAudio = useRef()
 
   useEffect(() => move && playSound(), [move])
-
-  const moveAndDisapear = () => {
-    setMove(true)
-  }
+  useEffect(() => !show && changePage(), [show])
 
   const playSound = () => exitAudio.current?.play()
 
@@ -32,20 +29,27 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      {show ? (
+      {show && (
         <S.Box
           onClick={() => setMove(true)}
           move={move}
-          onAnimationEnd={() => setShow(false)}
+          onAnimationEnd={() => {
+            setShow(false)
+            console.log("terminou!")
+          }}
         >
           <S.Subtitle>Let's Match?</S.Subtitle>
           <S.TitleBox onMouseOver={() => hoverAudio.current.play()}>
             <S.Title>AstroMatch</S.Title>
           </S.TitleBox>
         </S.Box>
-      ) : (
-        changePage()
       )}
     </S.Container>
   )
+}
+
+async function getStaticProps(context) {
+  return {
+    props: {},
+  }
 }

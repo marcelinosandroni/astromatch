@@ -6,6 +6,7 @@ import { GiPiercedHeart } from "react-icons/gi"
 import { FaHeartbeat } from "react-icons/fa"
 import { AiOutlineClear } from "react-icons/ai"
 
+console.log("STYLE")
 const broom = keyframes`
   50% {
     transform: rotate(20deg);
