@@ -10,26 +10,23 @@ export default function Match() {
   const [alert, setAlert] = useState({ show: false, msg: "" })
   const enterAudio = useRef()
 
-  console.log("CHEGUEI!")
-
   const baseUrl =
     "https://us-central1-missao-newton.cloudfunctions.net/astroMatch/marcelino/"
 
-  useEffect(() => {
-    nextProfile()
+  useEffect(async function () {
+    const r = await axios.get(`${baseUrl}person`)
+    setProfile({ ...r.data.profile })
+    getMatcheList()
   }, [])
 
-  console.log("PASSOU EFEITO")
-
-  // useEffect(() => {
-  //   enterAudio.current?.play()
-  // }, [])
+  useEffect(() => {
+    enterAudio.current?.play()
+  }, [])
 
   const nextProfile = async () => {
-    console.log("ma oie")
-    // const r = await axios.get(`${baseUrl}person`)
-    // setProfile({ ...r.data.profile })
-    // getMatcheList()
+    const r = await axios.get(`${baseUrl}person`)
+    setProfile({ ...r.data.profile })
+    getMatcheList()
   }
 
   const itsAMatch = async () => {
@@ -63,17 +60,17 @@ export default function Match() {
 
   const renderProfile = ({ name, age, photo, bio }) => (
     <>
-      <s.infocontainer>
-        <s.name show>{name}</s.name>
-        <s.age show>{age}</s.age>
-      </s.infocontainer>
-      <s.image src={photo} show />
-      <s.bio show>{bio}</s.bio>
-      <s.heart onclick={itsamatch} />
-      <s.heartbroken onclick={nextprofile} />
-      <s.heartlist />
-      <s.matchlist>{rendermatchlist()}</s.matchlist>
-      <s.clear onclick={clear} />
+      <S.InfoContainer>
+        <S.Name show>{name}</S.Name>
+        <S.Age show>{age}</S.Age>
+      </S.InfoContainer>
+      <S.Image src={photo} show />
+      <S.Bio show>{bio}</S.Bio>
+      <S.Heart onClick={itsAMatch} />
+      <S.HeartBroken onClick={nextProfile} />
+      <S.HeartList />
+      <S.MatchList>{renderMatchList()}</S.MatchList>
+      <S.Clear onClick={clear} />
     </>
   )
 

@@ -12,7 +12,10 @@ export default function Home() {
   const hoverAudio = useRef()
 
   useEffect(() => move && playSound(), [move])
-  useEffect(() => !show && changePage(), [show])
+
+  const moveAndDisapear = () => {
+    setMove(true)
+  }
 
   const playSound = () => exitAudio.current?.play()
 
@@ -29,27 +32,20 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      {show && (
+      {show ? (
         <S.Box
           onClick={() => setMove(true)}
           move={move}
-          onAnimationEnd={() => {
-            setShow(false)
-            console.log("terminou!")
-          }}
+          onAnimationEnd={() => setShow(false)}
         >
           <S.Subtitle>Let's Match?</S.Subtitle>
           <S.TitleBox onMouseOver={() => hoverAudio.current.play()}>
             <S.Title>AstroMatch</S.Title>
           </S.TitleBox>
         </S.Box>
+      ) : (
+        changePage()
       )}
     </S.Container>
   )
-}
-
-async function getStaticProps(context) {
-  return {
-    props: {},
-  }
 }
